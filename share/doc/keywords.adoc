@@ -17,6 +17,7 @@
 * `false`
 * `for`
 * `if`
+* `is`
 * `not`
 |
 [unstyled]
@@ -24,6 +25,7 @@
 * `or`
 * `return`
 * `true`
+* `type`
 * `while`
 * `xor`
 |===

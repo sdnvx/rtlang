@@ -4,34 +4,65 @@
 #include <libgen.h>
 #include <stdio.h>
 
-static void process(const char *path);
+#include <rtlang/error.h>
+#include <rtlang/lexer.h>
+#include <rtlang/utils.h>
+
+static void usage(void);
+static bool process(const char *path);
 
 int main(int argc, char *argv[])
 {
-    char *proc;
     int ch;
 
-    proc = basename(argv[0]);
-
     while (true) {
-        ch = getopt(argc, argv, "");
+        ch = getopt(argc, argv, "h");
         if (ch < 0)
             break;
+
+        switch (ch) {
+        case 'h':
+            usage();
+            return EXIT_SUCCESS;
+
+        default:
+            return EXIT_FAILURE;
+        }
     }
 
+    argc -= optind;
+    argv += optind;
+
     if (!argc) {
-        fprintf(stderr, "%s: no input files\n", proc);
+        rt_error("no input files");
         return EXIT_FAILURE;
     }
 
     while (argc > 0) {
-        process(*argv);
+        if (!process(*argv))
+            return EXIT_FAILURE;
+
         argc--, argv++;
     }
 
     return EXIT_SUCCESS;
 }
 
-static void process(const char *path)
+static void usage()
 {
+    fprintf(stderr, "usage:\n");
+    fprintf(stderr, "%s [options] <file> ...\n", rt_process_name());
+}
+
+static bool process(const char *path)
+{
+    rt_lexer_t *lexer;
+
+    lexer = rt_lexer_open(path);
+    if (!lexer)
+        return false;
+
+    rt_lexer_close(lexer);
+
+    return true;
 }

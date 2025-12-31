@@ -5,4 +5,14 @@ project(rtlang
     LANGUAGES C
 )
 
-add_executable(rtlang src/main.c src/lexer.c)
+set(CMAKE_C_STANDARD 23)
+set(CMAKE_C_EXTENSIONS ON)
+
+include_directories(include)
+
+add_executable(rtlang
+    src/main.c
+    src/error.c
+    src/lexer.c
+    src/utils.c
+)

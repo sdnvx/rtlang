@@ -1,0 +1,28 @@
+# Syntax
+
+## Definitions
+
+```
+CR    = %x0D ; carriage return
+LF    = %x0A ; line feed
+SP    = %x20 ; space
+
+CHAR  = %x01–FF ; any ASCII character, excluding NUL
+DIGIT = %x30–39 ; 0-9
+
+DQUOT = %x22 ; double quote
+```
+
+## Comments
+
+### Single-line comment
+
+```
+COMMENT-SL = "//" CHAR* LF
+```
+
+### Multi-line comment
+
+```
+COMMENT_ML = "/*" CHAR* "*/"
+```
