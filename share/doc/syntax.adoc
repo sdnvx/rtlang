@@ -1,16 +1,28 @@
 # Syntax
 
-## Definitions
+* EBNF is used to formally describe the syntax of the language.
+
+## Special characters
 
 ```
-CR    = %x0D ; carriage return
-LF    = %x0A ; line feed
-SP    = %x20 ; space
+CR = %x0D ; carriage return
+LF = %x0A ; line feed
+SP = %x20 ; space
+DQ = %x22 ; double quote
+SQ = %x27 ; single quote
+```
 
+## Character classes
+
+```
 CHAR  = %x01–FF ; any ASCII character, excluding NUL
 DIGIT = %x30–39 ; 0-9
+```
 
-DQUOT = %x22 ; double quote
+## Common definitions
+
+```
+NEWLINE = CR ?, LF ;
 ```
 
 ## Comments
@@ -18,11 +30,11 @@ DQUOT = %x22 ; double quote
 ### Single-line comment
 
 ```
-COMMENT-SL = "//" CHAR* LF
+COMMENT-SL = "//", CHAR *, LF ;
 ```
 
 ### Multi-line comment
 
 ```
-COMMENT_ML = "/*" CHAR* "*/"
+COMMENT_ML = "/*", CHAR *, "*/" ;
 ```
