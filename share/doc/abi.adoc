@@ -1,0 +1,4 @@
+# ABI
+
+* Compatibility with C ABI is required
+* `$` is reserved, used to separate namespaces in C-compatible way
