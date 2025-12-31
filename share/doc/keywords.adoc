@@ -5,14 +5,16 @@
 |
 [unstyled]
 * `and`
+* `atomic`
+* `auto`
 * `bool`
 * `break`
 * `const`
 * `continue`
 * `do`
-* `else`
 |
 [unstyled]
+* `else`
 * `enum`
 * `false`
 * `for`
@@ -27,6 +29,7 @@
 * `return`
 * `true`
 * `type`
+* `volatile`
 * `while`
 * `xor`
 |===
