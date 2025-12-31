@@ -1,0 +1,5 @@
+.vscode
+*.cmake
+CMakeFiles
+CMakeCache.txt
+Makefile
