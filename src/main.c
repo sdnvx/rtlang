@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
 {
     int ch;
 
-    while (true) {
+    loop {
         ch = getopt(argc, argv, "h");
         if (ch < 0)
             break;

@@ -4,5 +4,6 @@
 #include <sys/cdefs.h>
 
 #define null nullptr
+#define loop while (true)
 
 #endif // !RTLANG_DEFS_H
