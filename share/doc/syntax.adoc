@@ -1,9 +1,14 @@
 # Syntax
+:toc:
 
+## Overview
+
+* UTF-8 is used for source code.
 * EBNF is used to formally describe the syntax of the language.
 
 ## Special characters
 
+[subs="quotes"]
 ```
 CR = %x0D ; carriage return
 LF = %x0A ; line feed
@@ -14,6 +19,7 @@ SQ = %x27 ; single quote
 
 ## Character classes
 
+[subs="quotes"]
 ```
 CHAR  = %x01–FF ; any ASCII character, excluding NUL
 DIGIT = %x30–39 ; 0-9
@@ -21,20 +27,69 @@ DIGIT = %x30–39 ; 0-9
 
 ## Common definitions
 
+[subs="quotes"]
 ```
-NEWLINE = CR ?, LF ;
+NEWLINE = [ CR ] LF ;
 ```
 
 ## Comments
 
 ### Single-line comment
 
+[subs="quotes"]
 ```
-COMMENT-SL = "//", CHAR *, LF ;
+COMMENT-SL = "//" { CHAR } LF ;
 ```
 
 ### Multi-line comment
 
+[subs="quotes"]
 ```
-COMMENT_ML = "/*", CHAR *, "*/" ;
+COMMENT-ML = "/*" { CHAR } "*/" ;
 ```
+
+## Identifiers
+
+[subs="quotes"]
+```
+IDENTIFIER = LETTER { DIGIT | LETTER } ;
+```
+
+## Literals
+
+[subs="quotes"]
+```
+LITERAL = NULL-LITERAL
+        | BOOL-LITERAL
+        | STRING-LITERAL
+        | INT-LITERAL
+        | FLOAT-LITERAL
+
+```
+
+### Null literal
+
+[subs="quotes"]
+```
+NULL-LITERAL = "*null*"
+```
+
+### Boolean literals
+
+[subs="quotes"]
+```
+BOOL-LITERAL = "*true*" | "*false*" ;
+```
+
+### String literals
+
+[subs="quotes"]
+```
+STRING-LITERAL = '"' { CHAR } '"' ;
+```
+
+### Integer literals
+
+### Floating point literals
+
+## Expressions

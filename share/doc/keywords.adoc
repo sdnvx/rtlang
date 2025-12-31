@@ -10,13 +10,14 @@
 * `const`
 * `continue`
 * `do`
+* `else`
 |
 [unstyled]
-* `else`
 * `enum`
 * `false`
 * `for`
 * `if`
+* `in`
 * `is`
 * `not`
 |
