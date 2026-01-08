@@ -14,15 +14,18 @@ typedef rt_lexer_state_t (*rt_lexer_state_fn_t)(rt_lexer_t *lexer, int ch);
 
 static rt_lexer_state_t rt_lexer_on_initial(rt_lexer_t *lexer, int ch);
 static rt_lexer_state_t rt_lexer_on_identifier(rt_lexer_t *lexer, int ch);
+static rt_lexer_state_t rt_lexer_on_string(rt_lexer_t *lexer, int ch);
 
 static bool rt_is_space(int ch);
 static bool rt_is_alpha(int ch);
 static bool rt_is_digit(int ch);
+static bool rt_is_alnum(int ch);
 static bool rt_is_punct(int ch);
 
 static rt_lexer_state_fn_t rt_lexer_states[] = {
     [RT_STATE_INITIAL]    = rt_lexer_on_initial,
-    [RT_STATE_IDENTIFIER] = rt_lexer_on_identifier
+    [RT_STATE_IDENTIFIER] = rt_lexer_on_identifier,
+    [RT_STATE_STRING]     = rt_lexer_on_string
 };
 
 rt_lexer_t *rt_lexer_open(const char *path)
@@ -141,7 +144,6 @@ rt_lexer_state_t rt_lexer_on_initial(rt_lexer_t *lexer, int ch)
     }
 
     if (strchr("{}()[];,", ch)) {
-        
         switch (ch) {
             case '{': lexer->token = RT_TOKEN_LCURLY; break;
             case '}': lexer->token = RT_TOKEN_RCURLY; break;
@@ -163,6 +165,12 @@ rt_lexer_state_t rt_lexer_on_initial(rt_lexer_t *lexer, int ch)
         return RT_STATE_IDENTIFIER;
     }
 
+    if (ch == '"') {
+        lexer->token = RT_TOKEN_STRING;
+        lexer->flags = RT_LEXER_FLAG_START;
+        return RT_STATE_STRING;
+    }
+
     return RT_STATE_INITIAL;
 }
 
@@ -174,8 +182,8 @@ rt_lexer_state_t rt_lexer_on_identifier(rt_lexer_t *lexer, int ch)
         lexer->flags = RT_LEXER_FLAG_BREAK | RT_LEXER_FLAG_PUSH_BACK;
         return RT_STATE_INITIAL;
     }
-    
-    if (rt_is_alpha(ch) or rt_is_digit(ch)) {
+
+    if (rt_is_alnum(ch)) {
         lexer->flags = RT_LEXER_FLAG_APPEND;
         return RT_STATE_IDENTIFIER;
     }
@@ -184,6 +192,26 @@ rt_lexer_state_t rt_lexer_on_identifier(rt_lexer_t *lexer, int ch)
     lexer->error = true;
 
     return RT_STATE_INITIAL;
+}
+
+static rt_lexer_state_t rt_lexer_on_string(rt_lexer_t *lexer, int ch)
+{
+    assert(lexer != nullptr);
+
+    if ((ch == EOF) or (ch == '\r') or (ch == '\n')) {
+        rt_error("Unterminated string at %u, %u", lexer->row, lexer->column);
+        lexer->error = true;
+        return RT_STATE_INITIAL;
+    }
+
+    if (ch == '"') {
+        lexer->flags = RT_LEXER_FLAG_BREAK;
+        return RT_STATE_INITIAL;
+    }
+
+    lexer->flags = RT_LEXER_FLAG_APPEND;
+
+    return RT_STATE_STRING;
 }
 
 static bool rt_is_space(int ch)
@@ -202,6 +230,11 @@ static bool rt_is_alpha(int ch)
 static bool rt_is_digit(int ch)
 {
     return (ch >= '0') and (ch <= '9');
+}
+
+static bool rt_is_alnum(int ch)
+{
+    return rt_is_alpha(ch) or rt_is_digit(ch);
 }
 
 static bool rt_is_punct(int ch)
