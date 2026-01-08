@@ -3,18 +3,18 @@
 // Tagged union declaration
 //
 tagged tagged_union_t {
-    int a
-    double b
+    int a;
+    double b;
 }
 
 int main() {
-    tagged_union_t un = int(42)
+    tagged_union_t un = int(42);
 
     switch (un) {
         case a:
-            printf("un.a = %d\n", un.a)
+            printf("un.a = %d\n", un.a);
         case b:
-            printf("un.b = %f\n", un.b)
+            printf("un.b = %f\n", un.b);
     }
 }
 

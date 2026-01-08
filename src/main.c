@@ -70,7 +70,7 @@ static bool process(const char *path)
         if (!token)
             break;
 
-        printf("%s:'%s' at %u, %u\n",
+        printf("%s:'%s' at row %u, column %u\n",
                rt_token_type_name(token->type),
                token->text ? token->text : "", token->row,  token->column);
 

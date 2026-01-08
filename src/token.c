@@ -7,7 +7,15 @@ static const char *rt_token_type_names[] =
 {
     [RT_TOKEN_UNKNOWN]    = "UNKNOWN",
     [RT_TOKEN_EOF]        = "EOF",
-    [RT_TOKEN_IDENTIFIER] = "IDENTIFIER"
+    [RT_TOKEN_LCURLY]     = "LCURLY",
+    [RT_TOKEN_RCURLY]     = "RCURLY",
+    [RT_TOKEN_LPAREN]     = "LPAREN",
+    [RT_TOKEN_RPAREN]     = "RPAREN",
+    [RT_TOKEN_LSQUARE]    = "LSQUARE",
+    [RT_TOKEN_RSQUARE]    = "RSQUARE",
+    [RT_TOKEN_SEMICOLON]  = "SEMICOLON",
+    [RT_TOKEN_COMMA]      = "COMMA",
+    [RT_TOKEN_IDENTIFIER] = "IDENT"
 };
 
 const char *rt_token_type_name(rt_token_type_t type)

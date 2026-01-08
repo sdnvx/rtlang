@@ -9,7 +9,8 @@
 #include <rtlang/token.h>
 
 typedef enum rt_lexer_state {
-    RT_STATE_INITIAL
+    RT_STATE_INITIAL,
+    RT_STATE_IDENTIFIER
 } rt_lexer_state_t;
 
 typedef enum rt_lexer_flags {
