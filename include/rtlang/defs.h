@@ -6,4 +6,6 @@
 #define null nullptr
 #define loop while (true)
 
+#define countof(x) (sizeof(x) / sizeof((x)[0]))
+
 #endif // !RTLANG_DEFS_H

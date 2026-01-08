@@ -13,6 +13,7 @@ include_directories(include)
 add_executable(rtlang
     src/main.c
     src/error.c
+    src/string.c
     src/token.c
     src/lexer.c
     src/parser.c

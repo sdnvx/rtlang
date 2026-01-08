@@ -4,6 +4,7 @@
 #pragma once
 
 #include <stdio.h>
+#include <stdbool.h>
 
 #include <rtlang/token.h>
 
@@ -11,16 +12,28 @@ typedef enum rt_lexer_state {
     RT_STATE_INITIAL
 } rt_lexer_state_t;
 
+typedef enum rt_lexer_flags {
+	RT_LEXER_FLAG_START     = 0x01,
+	RT_LEXER_FLAG_BREAK     = 0x02,
+	RT_LEXER_FLAG_APPEND    = 0x04,
+	RT_LEXER_FLAG_PUSH_BACK = 0x08,
+	RT_LEXER_FLAG_TRIM      = 0x10
+} rt_lexer_flags_t;
+
 typedef struct rt_lexer {
     FILE *fp;
-    int row;
-    int col;
+    unsigned row;
+    unsigned column;
+    rt_lexer_state_t state;
+    rt_token_type_t token;
+    unsigned flags;
+    bool error;
 } rt_lexer_t;
 
 __BEGIN_DECLS
 
 rt_lexer_t *rt_lexer_open(const char *path);
-rt_token_t *rt_lexer_scan(rt_lexer_t *lexer);
+rt_token_t *rt_lexer_read_token(rt_lexer_t *lexer);
 void rt_lexer_close(rt_lexer_t *lex);
 
 __END_DECLS

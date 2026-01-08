@@ -56,13 +56,36 @@ static void usage()
 
 static bool process(const char *path)
 {
+    bool status = false;
+
     rt_lexer_t *lexer;
+    rt_token_t *token;
 
     lexer = rt_lexer_open(path);
     if (!lexer)
         return false;
 
+    while (true) {
+        token = rt_lexer_read_token(lexer);
+        if (!token)
+            break;
+
+        printf("%s:'%s' at %u, %u\n",
+               rt_token_type_name(token->type),
+               token->text ? token->text : "", token->row,  token->column);
+
+        if (token->type == RT_TOKEN_EOF) {
+            status = true;
+            break;
+        }
+
+        rt_token_free(token);
+    }
+
+    if (token)
+        rt_token_free(token);
+
     rt_lexer_close(lexer);
 
-    return true;
+    return status;
 }
