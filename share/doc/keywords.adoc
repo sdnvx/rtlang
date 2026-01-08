@@ -1,4 +1,4 @@
-# Keywords
+= Keywords
 
 [cols="a,a,a"]
 |===
@@ -12,23 +12,27 @@
 * `const`
 * `continue`
 * `do`
-|
-[unstyled]
 * `else`
 * `enum`
+|
+[unstyled]
 * `false`
 * `for`
+* `function`
 * `if`
 * `in`
 * `is`
 * `not`
-|
-[unstyled]
 * `null`
 * `or`
 * `return`
+|
+[unstyled]
+* `struct`
 * `true`
 * `type`
+* `union`
+* `void`
 * `volatile`
 * `while`
 * `xor`

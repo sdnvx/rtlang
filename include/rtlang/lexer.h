@@ -11,7 +11,11 @@
 typedef enum rt_lexer_state {
     RT_STATE_INITIAL,
     RT_STATE_IDENTIFIER,
-    RT_STATE_STRING
+    RT_STATE_STRING,
+    RT_STATE_SLASH,
+    RT_STATE_COMMENT_SL,
+    RT_STATE_COMMENT_ML,
+    RT_STATE_COMMENT_ML_END
 } rt_lexer_state_t;
 
 typedef enum rt_lexer_flags {

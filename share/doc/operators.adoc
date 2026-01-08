@@ -1,0 +1,151 @@
+= Operators
+
+== Arithmetic operators
+
+[cols="3,1"]
+|===
+| Operation | Syntax
+
+| Addition          | `a + b`
+| Subtraction       | `a - b`
+| Unary plus        | `+a`
+| Unary minus       | `-a`
+| Multiplication    | `a * b`
+| Division          | `a * b`
+| Modulo            | `a % b`
+| Power             | `a ** b`
+| Prefix increment  | `++a`
+| Postfix increment | `a++`
+| Prefix decrement  | `--a`
+| Postfix decrement | `a--`
+|===
+
+=== Relational operators
+
+[cols="3,1"]
+|===
+| Operation | Syntax
+
+| Equal to                 | `a == b`
+| Not equal to             | `a != b`
+| Less than                | `a < b`
+| Less than or equal to    | `a <= b`
+| Greater than             | `a > b`
+| Greater than or equal to | `a >= b`
+|===
+
+=== Logical operators
+
+[cols="3,1"]
+|===
+| Operation | Syntax
+
+| Logical negation              | `not a`
+| Logical conjunction           | `a and b`
+| Logical disjunction           | `a or b`
+| Logical exclusive disjunction | `a xor b`
+|===
+
+== Bitwise operators
+
+[cols="3,1"]
+|===
+| Operation | Syntax
+
+| Bitwise negation              | `~a`
+| Bitwise conjunction           | `a & b`
+| Bitwise disjunction           | `a \| b`
+| Bitwise exclusive disjunction | `a ^ b`
+| Shift left                    | `a << b`
+| Circular shift left           | `a <<< b`
+| Shift right                   | `a >> b`
+| Circular shift right          | `a >>> b`
+|===
+
+== Assignment operators
+
+[cols="3,1"]
+|===
+| Operation | Syntax
+
+| Assignment                                | `a := b`
+| Addition combination                      | `a += b`
+| Subtraction combination                   | `a -= b`
+| Multiplication combination                | `a *= b`
+| Division combination                      | `a /= b`
+| Modulo combination                        | `a %= b`
+| Power combination                         | `a **= b`
+| Bitwise negation combination              | `a ~= b`
+| Bitwise conjunction combination           | `a &= b`
+| Bitwise disjunction combination           | `a \|= b`
+| Butwise exclusive disjunction combination | `a ^= b`
+| Bitwise left shift combination            | `a <\<= b`
+| Bitwise circrular left shift combination  | `a <<\<= b`
+| Bitwise right shift combination           | `a >>= b`
+| Bitwise circular right shift combination  | `a >>>= b`
+|===
+
+== Member and pointer operators
+
+[cols="3,1"]
+|===
+| Operation | Syntax
+
+| Subscript           | `a[b]`
+| Indirection         | `*a`
+| Structure reference | `a.b`
+| Address of          | `@a`
+|===
+
+== Other operators
+
+[cols="3,1"]
+|===
+| Operation | Syntax
+
+| Function call       | `a(b)`
+| Comma               | `a, b`
+| Scope resolution    | `a::b`
+| Conversion          | `R(a)`
+|===
+
+== Operators predecence
+
+[cols="1,1,3,2"]
+|===
+| Order | Operator | Description | Associativity
+
+|  1
+| `::`
+| Scope resolution
+| None
+
+| 2
+| `++`
+| Postfix increment
+| Left-to-right
+
+| 2
+| `--`
+| Postfix decrement
+| Left-to-right
+
+| 2
+| `()`
+| Function call
+| Left-to-right
+
+| 2
+| `[]`
+| Array subscripting
+| Left-to-right
+
+| 2
+| `.`
+| Element selection
+| Left-to-right
+|===
+
+## Links
+
+- link:https://en.wikipedia.org/wiki/Operators_in_C_and_C%2B%2B[Wikipedia: Operators in C and C++]

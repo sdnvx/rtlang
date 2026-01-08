@@ -15,6 +15,10 @@ typedef rt_lexer_state_t (*rt_lexer_state_fn_t)(rt_lexer_t *lexer, int ch);
 static rt_lexer_state_t rt_lexer_on_initial(rt_lexer_t *lexer, int ch);
 static rt_lexer_state_t rt_lexer_on_identifier(rt_lexer_t *lexer, int ch);
 static rt_lexer_state_t rt_lexer_on_string(rt_lexer_t *lexer, int ch);
+static rt_lexer_state_t rt_lexer_on_slash(rt_lexer_t *lexer, int ch);
+static rt_lexer_state_t rt_lexer_on_comment_sl(rt_lexer_t *lexer, int ch);
+static rt_lexer_state_t rt_lexer_on_comment_ml(rt_lexer_t *lexer, int ch);
+static rt_lexer_state_t rt_lexer_on_comment_ml_end(rt_lexer_t *lexer, int ch);
 
 static bool rt_is_space(int ch);
 static bool rt_is_alpha(int ch);
@@ -23,9 +27,13 @@ static bool rt_is_alnum(int ch);
 static bool rt_is_punct(int ch);
 
 static rt_lexer_state_fn_t rt_lexer_states[] = {
-    [RT_STATE_INITIAL]    = rt_lexer_on_initial,
-    [RT_STATE_IDENTIFIER] = rt_lexer_on_identifier,
-    [RT_STATE_STRING]     = rt_lexer_on_string
+    [RT_STATE_INITIAL]        = rt_lexer_on_initial,
+    [RT_STATE_IDENTIFIER]     = rt_lexer_on_identifier,
+    [RT_STATE_STRING]         = rt_lexer_on_string,
+    [RT_STATE_SLASH]          = rt_lexer_on_slash,
+    [RT_STATE_COMMENT_SL]     = rt_lexer_on_comment_sl,
+    [RT_STATE_COMMENT_ML]     = rt_lexer_on_comment_ml,
+    [RT_STATE_COMMENT_ML_END] = rt_lexer_on_comment_ml_end
 };
 
 rt_lexer_t *rt_lexer_open(const char *path)
@@ -159,6 +167,11 @@ rt_lexer_state_t rt_lexer_on_initial(rt_lexer_t *lexer, int ch)
         return RT_STATE_INITIAL;
     }
 
+    if (ch == '/') {
+        lexer->flags = RT_LEXER_FLAG_START;
+        return RT_STATE_SLASH;
+    }
+
     if ((ch == '_') or rt_is_alpha(ch)) {
         lexer->token = RT_TOKEN_IDENTIFIER;
         lexer->flags = RT_LEXER_FLAG_START | RT_LEXER_FLAG_APPEND;
@@ -212,6 +225,63 @@ static rt_lexer_state_t rt_lexer_on_string(rt_lexer_t *lexer, int ch)
     lexer->flags = RT_LEXER_FLAG_APPEND;
 
     return RT_STATE_STRING;
+}
+
+static rt_lexer_state_t rt_lexer_on_slash(rt_lexer_t *lexer, int ch)
+{
+    if (ch == '/')
+        return RT_STATE_COMMENT_SL;
+    if (ch == '*')
+        return RT_STATE_COMMENT_ML;
+
+    if (ch == '=') {
+        lexer->token = RT_TOKEN_DIV_COMB;
+        lexer->flags = RT_LEXER_FLAG_BREAK;
+        return RT_STATE_INITIAL;
+    }
+
+    lexer->token = RT_TOKEN_DIV;
+    lexer->flags = RT_LEXER_FLAG_BREAK;
+
+    return RT_STATE_INITIAL;
+}
+
+static rt_lexer_state_t rt_lexer_on_comment_sl(rt_lexer_t *lexer, int ch)
+{
+    if ((ch == EOF) || (ch == '\n'))
+        return RT_STATE_INITIAL;
+
+    return RT_STATE_COMMENT_SL;
+}
+
+static rt_lexer_state_t rt_lexer_on_comment_ml(rt_lexer_t *lexer, int ch)
+{
+    if (ch == EOF) {
+        lexer->error = true;
+        rt_error("Unterminated comment at %u, %u", lexer->row, lexer->column);
+        return RT_STATE_INITIAL;
+    }
+
+    if (ch == '*')
+        return RT_STATE_COMMENT_ML_END;
+
+    return RT_STATE_COMMENT_ML;
+}
+
+static rt_lexer_state_t rt_lexer_on_comment_ml_end(rt_lexer_t *lexer, int ch)
+{
+    if (ch == EOF) {
+        lexer->error = true;
+        rt_error("Unterminated comment at %u, %u", lexer->row, lexer->column);
+        return RT_STATE_INITIAL;
+    }
+
+    if (ch == '*')
+        return RT_STATE_COMMENT_ML_END;
+    if (ch == '/')
+        return RT_STATE_INITIAL;
+
+    return RT_STATE_COMMENT_ML;
 }
 
 static bool rt_is_space(int ch)
